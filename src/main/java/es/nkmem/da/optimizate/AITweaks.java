@@ -42,7 +42,7 @@ public class AITweaks extends JavaPlugin implements Listener {
     }
 
     private boolean updateAi(LivingEntity le) {
-        if (le instanceof Animals || le instanceof Monster || le instanceof Squid) {
+        if (le instanceof Animals || le instanceof Monster || le instanceof WaterMob) {
             return AIUtils.forceNoAi(le);
         }
         return false;
