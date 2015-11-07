@@ -1,0 +1,4 @@
+name: AITweaks
+main: es.nkmem.da.optimizate.AITweaks
+version: ${project.version}
+author: vemacs
