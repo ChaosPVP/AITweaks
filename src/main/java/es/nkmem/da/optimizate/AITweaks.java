@@ -10,9 +10,19 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class AITweaks extends JavaPlugin implements Listener {
+    private List<EntityType> allowedTypes = new ArrayList<>();
+
     @Override
     public void onEnable() {
+        saveDefaultConfig();
+        allowedTypes.addAll(getConfig().getStringList("allowed-types").stream()
+                .map(allowed -> EntityType.valueOf(allowed.toUpperCase()))
+                .collect(Collectors.toList()));
         getServer().getPluginManager().registerEvents(this, this);
         getServer().getScheduler().runTaskLater(this, () -> {
             int i = 0;
@@ -42,6 +52,9 @@ public class AITweaks extends JavaPlugin implements Listener {
     }
 
     private boolean updateAi(LivingEntity le) {
+        if (allowedTypes.contains(le.getType())) {
+            return false;
+        }
         if (le instanceof Animals || le instanceof Monster || le instanceof WaterMob) {
             return AIUtils.forceNoAi(le);
         }
